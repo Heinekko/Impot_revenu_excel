@@ -1,0 +1,69 @@
+Function impot_revenu(revenu_net) As Long
+'revenu_net = revenu après abattement sur lequel est appliqué les tranches d'imposition
+'déclaration des variables et des constantes à mettre à jour en cas de modification par nos amis du Fisc
+ Dim tranche_0 As Long
+ Dim tranche_1 As Long
+ Dim tranche_2 As Long
+ Dim tranche_3 As Long
+ Dim tranche_4 As Long
+ 
+ Dim taux_1 As Long
+ Dim taux_2 As Long
+ Dim taux_3 As Long
+ Dim taux_4 As Long
+ Dim taux_5 As Long
+ 
+ 
+ tranche_0 = 0
+ tranche_1 = 10084
+ tranche_2 = 25710
+ tranche_3 = 73517
+ tranche_4 = 158122
+ 
+ taux_1 = 0
+ taux_2 = 11
+ taux_3 = 30
+ taux_4 = 41
+ taux_5 = 45
+
+ ' début du calcul
+ 
+ impot_revenu = 0
+ 
+ 'calculer le max de revenu par tranche
+ Dim max_1, max_2, max_3, max_4 As Long
+ 
+ max_1 = tranche_1 - tranche_0
+ max_2 = tranche_2 - tranche_1
+ max_3 = tranche_3 - tranche_2
+ max_4 = tranche_4 - tranche_3
+
+ 
+ 
+ ' calcul pour le taux_1
+ If revenu_net > tranche_0 Then
+ impot_revenu = impot_revenu + WorksheetFunction.Min((revenu_net - tranche_0), max_1) * taux_1 / 100
+ End If
+ 
+ ' calcul pour le taux_2
+ If revenu_net > tranche_1 Then
+ impot_revenu = impot_revenu + WorksheetFunction.Min((revenu_net - tranche_1), max_2) * taux_2 / 100
+ End If
+ 
+ ' calcul pour le taux_3
+ If revenu_net > tranche_2 Then
+ impot_revenu = impot_revenu + WorksheetFunction.Min((revenu_net - tranche_2), max_3) * taux_3 / 100
+ End If
+ 
+ ' calcul pour le taux_4
+ If revenu_net > tranche_3 Then
+ impot_revenu = impot_revenu + WorksheetFunction.Min((revenu_net - tranche_3), max_4) * taux_4 / 100
+ End If
+ 
+' calcul pour le taux_5 => non cappé
+ If revenu_net > tranche_4 Then
+ impot_revenu = impot_revenu + (revenu_net - tranche_4) * taux_5 / 100
+ End If
+ 
+ 
+End Function
